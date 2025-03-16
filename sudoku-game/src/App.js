@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import './App.css'; // Importáljuk a stílusokat
 
 const Sudoku = () => {
   const [grid, setGrid] = useState(Array(9).fill().map(() => Array(9).fill('')));
   const [selectedNumber, setSelectedNumber] = useState(null);
+  const [isValidMove, setIsValidMove] = useState(true);
 
   const handleCellClick = (row, col) => {
     if (selectedNumber === null) return;
@@ -13,8 +15,9 @@ const Sudoku = () => {
 
     if (isValid(newGrid, row, col, selectedNumber)) {
       setGrid(newGrid);
+      setIsValidMove(true);
     } else {
-      alert('Érvénytelen lépés!');
+      setIsValidMove(false);
     }
   };
 
@@ -41,82 +44,38 @@ const Sudoku = () => {
     return true;
   };
 
-  const isGridValid = (grid) => {
-    for (let row = 0; row < 9; row++) {
-      for (let col = 0; col < 9; col++) {
-        const num = grid[row][col];
-        if (num !== '' && !isValid(grid, row, col, num)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
   return (
-    <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
+    <div className="sudoku-container">
       <div>
         <h1>Sudoku</h1>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(9, 50px)', gap: '2px' }}>
+        <div className="sudoku-grid">
           {grid.map((row, rowIndex) =>
             row.map((cell, colIndex) => (
               <div
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  textAlign: 'center',
-                  border: '1px solid #000',
-                  backgroundColor: !isValid(grid, rowIndex, colIndex, cell) ? '#ffcccc' : '#fff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                }}
+                className={`sudoku-cell ${!isValid(grid, rowIndex, colIndex, cell) ? 'invalid' : ''}`}
               >
                 {cell !== '' ? cell : ''}
               </div>
             ))
           )}
         </div>
-        <div style={{ marginTop: '20px' }}>
-          {isGridValid(grid) ? (
-            <p style={{ color: 'green' }}>A Sudoku érvényes!</p>
-          ) : (
-            <p style={{ color: 'red' }}>A Sudoku nem érvényes!</p>
-          )}
+        <div className="error-message">
+          {!isValidMove && <p>A lépés nem helyes!</p>}
         </div>
       </div>
-      <div>
+      <div className="number-selector">
         <h2>Válassz számot</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 50px)', gap: '10px' }}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-            <div
-              key={num}
-              onClick={() => setSelectedNumber(num)}
-              style={{
-                width: '50px',
-                height: '50px',
-                textAlign: 'center',
-                border: '1px solid #000',
-                backgroundColor: selectedNumber === num ? '#ccccff' : '#f0f0f0',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              {num}
-            </div>
-          ))}
-        </div>
-        <button
-          onClick={() => setSelectedNumber(null)}
-          style={{ marginTop: '10px', padding: '5px 10px', cursor: 'pointer' }}
-        >
-          Törlés
-        </button>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+          <div
+            key={num}
+            onClick={() => setSelectedNumber(num)}
+            className={selectedNumber === num ? 'selected' : ''}
+          >
+            {num}
+          </div>
+        ))}
       </div>
     </div>
   );

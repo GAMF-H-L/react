@@ -2,13 +2,20 @@ import React, { useState } from 'react';
 
 const Sudoku = () => {
   const [grid, setGrid] = useState(Array(9).fill().map(() => Array(9).fill('')));
+  const [selectedNumber, setSelectedNumber] = useState(null);
 
-  const handleChange = (e, row, col) => {
-    const value = e.target.value === '' ? '' : parseInt(e.target.value, 10);
+  const handleCellClick = (row, col) => {
+    if (selectedNumber === null) return;
+
     const newGrid = grid.map((r, rowIndex) =>
-      r.map((cell, colIndex) => (rowIndex === row && colIndex === col ? value : cell))
+      r.map((cell, colIndex) => (rowIndex === row && colIndex === col ? selectedNumber : cell))
     );
-    setGrid(newGrid);
+
+    if (isValid(newGrid, row, col, selectedNumber)) {
+      setGrid(newGrid);
+    } else {
+      alert('Érvénytelen lépés!');
+    }
   };
 
   const isValid = (grid, row, col, num) => {
@@ -47,35 +54,69 @@ const Sudoku = () => {
   };
 
   return (
-    <div>
-      <h1>Sudoku</h1>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(9, 50px)', gap: '2px' }}>
-        {grid.map((row, rowIndex) =>
-          row.map((cell, colIndex) => (
-            <input
-              key={`${rowIndex}-${colIndex}`}
-              type="number"
-              min="1"
-              max="9"
-              value={cell === '' ? '' : cell}
-              onChange={(e) => handleChange(e, rowIndex, colIndex)}
+    <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
+      <div>
+        <h1>Sudoku</h1>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(9, 50px)', gap: '2px' }}>
+          {grid.map((row, rowIndex) =>
+            row.map((cell, colIndex) => (
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                onClick={() => handleCellClick(rowIndex, colIndex)}
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  textAlign: 'center',
+                  border: '1px solid #000',
+                  backgroundColor: !isValid(grid, rowIndex, colIndex, cell) ? '#ffcccc' : '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                {cell !== '' ? cell : ''}
+              </div>
+            ))
+          )}
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          {isGridValid(grid) ? (
+            <p style={{ color: 'green' }}>A Sudoku érvényes!</p>
+          ) : (
+            <p style={{ color: 'red' }}>A Sudoku nem érvényes!</p>
+          )}
+        </div>
+      </div>
+      <div>
+        <h2>Válassz számot</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 50px)', gap: '10px' }}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+            <div
+              key={num}
+              onClick={() => setSelectedNumber(num)}
               style={{
                 width: '50px',
                 height: '50px',
                 textAlign: 'center',
                 border: '1px solid #000',
-                backgroundColor: !isValid(grid, rowIndex, colIndex, cell) ? '#ffcccc' : '#fff',
+                backgroundColor: selectedNumber === num ? '#ccccff' : '#f0f0f0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
               }}
-            />
-          ))
-        )}
-      </div>
-      <div style={{ marginTop: '20px' }}>
-        {isGridValid(grid) ? (
-          <p style={{ color: 'green' }}>A Sudoku érvényes!</p>
-        ) : (
-          <p style={{ color: 'red' }}>A Sudoku nem érvényes!</p>
-        )}
+            >
+              {num}
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={() => setSelectedNumber(null)}
+          style={{ marginTop: '10px', padding: '5px 10px', cursor: 'pointer' }}
+        >
+          Törlés
+        </button>
       </div>
     </div>
   );

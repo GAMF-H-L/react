@@ -5,6 +5,8 @@ const Sudoku = () => {
   const [grid, setGrid] = useState(Array(9).fill().map(() => Array(9).fill('')));
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [isValidMove, setIsValidMove] = useState(true);
+  const [history, setHistory] = useState([]); // Tárolja a lépések történetét
+  const [stepIndex, setStepIndex] = useState(-1); // Az aktuális lépés indexe
 
   const handleCellClick = (row, col) => {
     if (selectedNumber === null) return;
@@ -14,6 +16,12 @@ const Sudoku = () => {
     );
 
     if (isValid(newGrid, row, col, selectedNumber)) {
+      // Új lépés hozzáadása a történethez
+      const newHistory = history.slice(0, stepIndex + 1);
+      newHistory.push({ grid: newGrid, row, col, number: selectedNumber });
+      setHistory(newHistory);
+      setStepIndex(newHistory.length - 1);
+
       setGrid(newGrid);
       setIsValidMove(true);
     } else {
@@ -44,6 +52,26 @@ const Sudoku = () => {
     return true;
   };
 
+  const handleUndo = () => {
+    if (stepIndex > 0) {
+      const prevStep = history[stepIndex - 1];
+      setGrid(prevStep.grid);
+      setStepIndex(stepIndex - 1);
+    } else if (stepIndex === 0) {
+      // Visszaállítjuk az üres táblázatra
+      setGrid(Array(9).fill().map(() => Array(9).fill('')));
+      setStepIndex(-1);
+    }
+  };
+
+  const handleRedo = () => {
+    if (stepIndex < history.length - 1) {
+      const nextStep = history[stepIndex + 1];
+      setGrid(nextStep.grid);
+      setStepIndex(stepIndex + 1);
+    }
+  };
+
   return (
     <div className="sudoku-container">
       <div>
@@ -63,6 +91,14 @@ const Sudoku = () => {
         </div>
         <div className="error-message">
           {!isValidMove && <p>A lépés nem helyes!</p>}
+        </div>
+        <div className="undo-redo-buttons">
+          <button onClick={handleUndo} disabled={stepIndex < 0}>
+            Vissza
+          </button>
+          <button onClick={handleRedo} disabled={stepIndex >= history.length - 1}>
+            Előre
+          </button>
         </div>
       </div>
       <div className="number-selector">

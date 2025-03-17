@@ -54,3 +54,21 @@
   margin-top: 20px;
   color: red;
 }
+
+.undo-redo-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.undo-redo-buttons button {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #000;
+  background-color: #f0f0f0;
+}
+
+.undo-redo-buttons button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

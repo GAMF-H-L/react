@@ -2,13 +2,29 @@ import React, { useState } from 'react';
 import './App.css'; // Importáljuk a stílusokat
 
 const Sudoku = () => {
-  const [grid, setGrid] = useState(Array(9).fill().map(() => Array(9).fill('')));
+  // Kezdeti Sudoku tábla alapértékekkel
+  const initialGrid = [
+    [5, 3, '', '', 7, '', '', '', ''],
+    [6, '', '', 1, 9, 5, '', '', ''],
+    ['', 9, 8, '', '', '', '', 6, ''],
+    [8, '', '', '', 6, '', '', '', 3],
+    [4, '', '', 8, '', 3, '', '', 1],
+    [7, '', '', '', 2, '', '', '', 6],
+    ['', 6, '', '', '', '', 2, 8, ''],
+    ['', '', '', 4, 1, 9, '', '', 5],
+    ['', '', '', '', 8, '', '', 7, 9],
+  ];
+
+  const [grid, setGrid] = useState(initialGrid);
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [isValidMove, setIsValidMove] = useState(true);
   const [history, setHistory] = useState([]); // Tárolja a lépések történetét
   const [stepIndex, setStepIndex] = useState(-1); // Az aktuális lépés indexe
 
   const handleCellClick = (row, col) => {
+    // Ha a cella már tartalmaz alapértéket, nem lehet módosítani
+    if (initialGrid[row][col] !== '') return;
+
     if (selectedNumber === null) return;
 
     const newGrid = grid.map((r, rowIndex) =>
@@ -59,7 +75,7 @@ const Sudoku = () => {
       setStepIndex(stepIndex - 1);
     } else if (stepIndex === 0) {
       // Visszaállítjuk az üres táblázatra
-      setGrid(Array(9).fill().map(() => Array(9).fill('')));
+      setGrid(initialGrid);
       setStepIndex(-1);
     }
   };
@@ -82,7 +98,9 @@ const Sudoku = () => {
               <div
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
-                className={`sudoku-cell ${!isValid(grid, rowIndex, colIndex, cell) ? 'invalid' : ''}`}
+                className={`sudoku-cell ${
+                  !isValid(grid, rowIndex, colIndex, cell) ? 'invalid' : ''
+                } ${initialGrid[rowIndex][colIndex] !== '' ? 'initial' : ''}`}
               >
                 {cell !== '' ? cell : ''}
               </div>

@@ -24,8 +24,24 @@
   background-color: #fff;
 }
 
+/* Vastagabb vonalak a 3x3-as cellákhoz */
+.sudoku-cell:nth-child(3n) {
+  border-right: 3px solid #000;
+}
+
+.sudoku-cell:nth-child(n + 19):nth-child(-n + 27),
+.sudoku-cell:nth-child(n + 46):nth-child(-n + 54),
+.sudoku-cell:nth-child(n + 73):nth-child(-n + 81) {
+  border-bottom: 3px solid #000;
+}
+
 .sudoku-cell.invalid {
   background-color: #ffcccc;
+}
+
+.sudoku-cell.initial {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
 }
 
 .number-selector {

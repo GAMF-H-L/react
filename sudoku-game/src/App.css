@@ -9,7 +9,7 @@
 .sudoku-grid {
   display: grid;
   grid-template-columns: repeat(9, 50px);
-  gap: 2px;
+  gap: 6px;
 }
 
 .sudoku-cell {
@@ -37,11 +37,6 @@
 
 .sudoku-cell.invalid {
   background-color: #ffcccc;
-}
-
-.sudoku-cell.initial {
-  background-color: #e0e0e0;
-  cursor: not-allowed;
 }
 
 .number-selector {

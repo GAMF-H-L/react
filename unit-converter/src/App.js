@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
+import './UnitConverter.css';
 
 const UnitConverter = () => {
   const [inputValue, setInputValue] = useState('');
   const [outputValue, setOutputValue] = useState('');
   const [selectedConversion, setSelectedConversion] = useState({
-    from: 'meter',
-    to: 'centimeter',
+    from: 'm',
+    to: 'cm',
   });
 
   const conversions = [
-    { from: 'meter', to: 'centimeter', factor: 100 },
-    { from: 'meter', to: 'kilometer', factor: 0.001 },
-    { from: 'centimeter', to: 'meter', factor: 0.01 },
-    { from: 'centimeter', to: 'kilometer', factor: 0.00001 },
-    { from: 'kilometer', to: 'meter', factor: 1000 },
-    { from: 'kilometer', to: 'centimeter', factor: 100000 },
+    { from: 'm', to: 'cm', factor: 100 },
+    { from: 'm', to: 'km', factor: 0.001 },
+    { from: 'cm', to: 'm', factor: 0.01 },
+    { from: 'cm', to: 'km', factor: 0.00001 },
+    { from: 'km', to: 'm', factor: 1000 },
+    { from: 'km', to: 'cm', factor: 100000 },
   ];
 
   const handleInputChange = (e) => {
@@ -59,18 +60,18 @@ const UnitConverter = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+    <div className="container">
+      <div className="converter">
         <input
           type="number"
           value={inputValue}
           onChange={handleInputChange}
-          style={{ width: '100px', textAlign: 'right' }}
+          className="input-field"
         />
         <select
           value={`${selectedConversion.from}-${selectedConversion.to}`}
           onChange={handleConversionChange}
-          style={{ width: '150px' }}
+          className="select-list"
         >
           {conversions.map((conv, index) => (
             <option key={index} value={`${conv.from}-${conv.to}`}>
@@ -82,7 +83,7 @@ const UnitConverter = () => {
           type="number"
           value={outputValue}
           onChange={handleOutputChange}
-          style={{ width: '100px', textAlign: 'left' }}
+          className="input-field"
         />
       </div>
     </div>

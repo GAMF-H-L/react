@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './UnitConverter.css';
+import './App.css';
 
 const UnitConverter = () => {
   const [inputValue, setInputValue] = useState('');
@@ -11,9 +11,6 @@ const UnitConverter = () => {
 
   const conversions = [
     { from: 'm', to: 'cm', factor: 100 },
-    { from: 'm', to: 'km', factor: 0.001 },
-    { from: 'cm', to: 'm', factor: 0.01 },
-    { from: 'cm', to: 'km', factor: 0.00001 },
     { from: 'km', to: 'm', factor: 1000 },
     { from: 'km', to: 'cm', factor: 100000 },
   ];
@@ -44,11 +41,11 @@ const UnitConverter = () => {
     }
     const conversion = conversions.find(
       (conv) =>
-        conv.from === selectedConversion.to &&
-        conv.to === selectedConversion.from
+        conv.from === selectedConversion.from &&
+        conv.to === selectedConversion.to
     );
     if (conversion) {
-      setInputValue(value * conversion.factor);
+      setInputValue(value / conversion.factor);
     }
   };
 

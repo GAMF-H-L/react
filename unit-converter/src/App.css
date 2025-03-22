@@ -5,6 +5,14 @@
   background-color: #f0f0f0;
 }
 
+.head {
+  display: flex;
+  height: 20vh;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10vh;
+}
+
 .converter {
   display: flex;
   justify-content: center;

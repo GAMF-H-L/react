@@ -58,6 +58,9 @@ const UnitConverter = () => {
 
   return (
     <div className="container">
+      <div className="head">      
+        <h1>Mértékegység átváltó</h1>
+      </div>
       <div className="converter">
         <input
           type="number"
@@ -72,7 +75,7 @@ const UnitConverter = () => {
         >
           {conversions.map((conv, index) => (
             <option key={index} value={`${conv.from}-${conv.to}`}>
-              {conv.from} -- {conv.to}
+              {conv.from} &lt;--&gt; {conv.to}
             </option>
           ))}
         </select>

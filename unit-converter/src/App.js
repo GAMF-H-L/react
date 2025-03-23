@@ -13,6 +13,14 @@ const UnitConverter = () => {
     { from: 'm', to: 'cm', factor: 100 },
     { from: 'km', to: 'm', factor: 1000 },
     { from: 'km', to: 'cm', factor: 100000 },
+    { from: 'q', to: 'kg', factor: 100 },
+    { from: 't', to: 'kg', factor: 1000 },
+    { from: 'ha', to: 'm²', factor: 10000 },
+    { from: 'm/s', to: 'km/h', factor: 3.6 },
+    { from: 'mph', to: 'km/h', factor: 1.6092 },
+    { from: 'LE', to: 'kW', factor: 0.7355 },
+    { from: 'font (lb)', to: 'kg', factor: 0.4536 },
+    { from: 'uncia (oz)', to: 'kg', factor: 0.02835 },
   ];
 
   const handleInputChange = (e) => {
